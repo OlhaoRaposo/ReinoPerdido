@@ -6,7 +6,9 @@ public class CodeLock : MonoBehaviour, IInteractable, ICameraLockable
 {
     private Vector3 cameraView => transform.position + new Vector3(0,0,-.8f);
     
+    [SerializeField] private string text;
     [SerializeField] private string code;
+    [SerializeField] private int maxCodeDigits = 4;
     [SerializeField] private TextMeshProUGUI panelText;
     private float interval = 0.5f;
     private float timer = 0;
@@ -34,14 +36,33 @@ public class CodeLock : MonoBehaviour, IInteractable, ICameraLockable
         if (timer > interval) {
             on = !on;
             if(on)
-                code += "I";
+                text += "I";
             else {
-                if(code[^1] == 'I') 
-                    code = code.Remove(code.Length - 1);
+                if(text.Length > 0) {
+                    if(text[text.Length - 1] == 'I') 
+                        text = text.Remove(text.Length - 1);
+                }
             }
             timer = 0;
         }
-        panelText.text = code;
+        panelText.text = text;
     }
-
+    
+    public void AddKey(string key) {
+        if(code.Length >= maxCodeDigits) return;
+        
+        foreach (var c in text) {
+            if(c == 'I') {
+               int index = text.IndexOf("I");
+               text = text.Remove(index,1);
+            }
+        }
+        text += key;
+        code += key;
+    }
+    public void ClearKeys() {
+        text = "";
+        code = "";
+    }
+    
 }

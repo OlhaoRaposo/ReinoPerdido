@@ -3,7 +3,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]private float speed = 12f;
     private CharacterController controller => GetComponent<CharacterController>();
-    public static PlayerMovement instance => FindObjectOfType<PlayerMovement>();
+    public static PlayerMovement instance => FindFirstObjectByType<PlayerMovement>();
     
     public bool movementLocked { get; set; }
     void Update(){
