@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 public class PlayerAim : MonoBehaviour
 {
@@ -11,7 +8,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField]GameObject interactText;
     private Transform playerBody;
     [SerializeField]private float mouseX,mouseY;
-    public static PlayerAim instance => FindObjectOfType<PlayerAim>();
+    public static PlayerAim instance => FindFirstObjectByType<PlayerAim>();
     public bool isLocked { get; set; }
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,15 +38,27 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void FixedUpdate(){
-        if(isLocked) return;
-        mouseX = Mathf.Lerp(mouseX,Mathf.Clamp(Input.GetAxisRaw("Mouse X"),-5,5) * (sensitivity * 100) * Time.deltaTime,0.35f);
-        mouseY = Mathf.Lerp(mouseY,Mathf.Clamp(Input.GetAxisRaw("Mouse Y"),-5,5) * (sensitivity * 100) * Time.deltaTime,0.35f);       
-        transform.Rotate(Vector3.left * mouseY);
-        if(transform.localEulerAngles.x > 180 && transform.localEulerAngles.x < 360 + minAngle){
-            transform.localEulerAngles = new Vector3(360 + minAngle,0,0);
-        }else if(transform.localEulerAngles.x < 180 && transform.localEulerAngles.x > maxAngle){
-            transform.localEulerAngles = new Vector3(maxAngle,0,0);
+        if(isLocked) {
+            Vector3 mousePos = Input.mousePosition;
+            if(Physics.Raycast(Camera.main.ScreenPointToRay(mousePos),out RaycastHit hit)) {
+                if(Input.GetMouseButtonDown(0)) {
+                    Debug.Log(hit.collider.name);
+                    if(hit.collider.GetComponent<IClickable>() != null) {
+                        hit.collider.GetComponent<IClickable>().Click();
+                    }
+                }
+            }
         }
-        playerBody.Rotate(Vector3.up * mouseX);
+        else {
+            mouseX = Mathf.Lerp(mouseX,Mathf.Clamp(Input.GetAxisRaw("Mouse X"),-5,5) * (sensitivity * 100) * Time.deltaTime,0.35f);
+            mouseY = Mathf.Lerp(mouseY,Mathf.Clamp(Input.GetAxisRaw("Mouse Y"),-5,5) * (sensitivity * 100) * Time.deltaTime,0.35f);       
+            transform.Rotate(Vector3.left * mouseY);
+            if(transform.localEulerAngles.x > 180 && transform.localEulerAngles.x < 360 + minAngle){
+                transform.localEulerAngles = new Vector3(360 + minAngle,0,0);
+            }else if(transform.localEulerAngles.x < 180 && transform.localEulerAngles.x > maxAngle){
+                transform.localEulerAngles = new Vector3(maxAngle,0,0);
+            }
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
     }
 }
