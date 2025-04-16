@@ -8,6 +8,7 @@ public class CodeLock : MonoBehaviour, IInteractable, ICameraLockable
     
     [SerializeField] private string text;
     [SerializeField] private string code;
+    [SerializeField] private string targetCode;
     [SerializeField] private int maxCodeDigits = 4;
     [SerializeField] private TextMeshProUGUI panelText;
     private float interval = 0.5f;
@@ -64,5 +65,13 @@ public class CodeLock : MonoBehaviour, IInteractable, ICameraLockable
         text = "";
         code = "";
     }
-    
+    public void CheckPassword() {
+        if(code == targetCode) {
+            Debug.Log("Code unlocked");
+        }else {
+            AddError();
+        }
+    }
+    private void AddError() {
+    }
 }

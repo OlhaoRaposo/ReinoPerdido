@@ -491,7 +491,7 @@ Material:
     - _LinkDetailsWithBase3: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 2
-    - _Metallic: 0
+    - _Metallic: 0.824
     - _Metallic0: 0
     - _Metallic1: 0
     - _Metallic2: 0
@@ -536,7 +536,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0.577
+    - _Smoothness: 0.915
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
