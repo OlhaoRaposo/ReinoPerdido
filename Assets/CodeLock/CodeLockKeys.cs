@@ -8,7 +8,9 @@ public class CodeLockKeys : MonoBehaviour,IClickable {
       
       CodeLock codeLock = transform.GetComponentInParent<CodeLock>();
       codeLock.AddKey(key);
-      if (key == "confirm" || key == "clear") {
+      if (key == "confirm") {
+         codeLock.CheckPassword();
+      }else if(key == "clear") {
          codeLock.ClearKeys();
       }
    }
